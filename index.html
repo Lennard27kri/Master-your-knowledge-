@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Master Your Knowledge</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #F5F7FA;
+            text-align: center;
+            padding: 40px;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0px 4px 20px rgba(0,0,0,0.1);
+        }
+        button {
+            background: #0B3C5D;
+            color: white;
+            padding: 12px 20px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        textarea {
+            width: 100%;
+            height: 150px;
+            margin: 10px 0;
+        }
+        .feedback {
+            background: #eaf2f8;
+            padding: 20px;
+            margin-top: 20px;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Master Your Knowledge</h1>
+        <h3>Eigenen Stoff eingeben</h3>
+        <textarea id="userInput" placeholder="Gib hier deinen Lernstoff ein oder lade eine Datei hoch."></textarea>
+        <br>
+        <button onclick="startRecognition()">🎤 Sprechen</button>
+        <p id="transcript"></p>
+        <br>
+        <button onclick="evaluate()">Bewerten</button>
+        <div class="feedback" id="feedback" style="display:none;">
+            <h3>KI-Feedback</h3>
+            <p id="result">Hier wird das Feedback angezeigt.</p>
+        </div>
+    </div>
+    <script>
+        let finalTranscript = "";
+
+        function startRecognition() {
+            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
+            recognition.lang = "de-DE";
+            recognition.start();
+
+            recognition.onresult = function(event) {
+                finalTranscript = event.results[0][0].transcript;
+                document.getElementById("transcript").innerText = finalTranscript;
+            };
+        }
+
+        function evaluate() {
+            const userText = document.getElementById("userInput").value || finalTranscript;
+
+            // Hier später die KI-Integration einfügen
+            // Momentan simulieren wir nur ein Feedback
+            const feedback = "Das ist ein Beispiel-Feedback. Hier könntest du später KI-gestütztes Feedback anzeigen.";
+
+            document.getElementById("feedback").style.display = "block";
+            document.getElementById("result").innerText = feedback;
+        }
+    </script>
+</body>
+</html>
