@@ -8,141 +8,212 @@
 <style>
 body {
     font-family: Arial, sans-serif;
-    background: #0f172a;
-    color: white;
+    background-color: #f4f6f9;
     text-align: center;
-    padding: 30px;
+    padding: 20px;
+}
+
+.container {
+    max-width: 700px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
 }
 
 textarea {
-    width: 80%;
+    width: 100%;
     height: 150px;
+    margin-top: 10px;
     padding: 10px;
-    border-radius: 10px;
-    border: none;
-    font-size: 16px;
 }
 
 button {
-    padding: 10px 20px;
     margin: 10px;
+    padding: 10px 20px;
     border: none;
-    border-radius: 10px;
+    background-color: #4a6cf7;
+    color: white;
+    border-radius: 5px;
     cursor: pointer;
-    font-weight: bold;
 }
 
-.primary {
-    background: #3b82f6;
-    color: white;
-}
-
-.secondary {
-    background: #10b981;
-    color: white;
+button:hover {
+    background-color: #334fd1;
 }
 
 .card {
-    background: white;
-    color: black;
+    margin-top: 20px;
     padding: 20px;
-    margin: 20px auto;
-    width: 60%;
-    border-radius: 15px;
-    cursor: pointer;
+    border: 2px solid #4a6cf7;
+    border-radius: 10px;
+    min-height: 100px;
     font-size: 18px;
 }
 
 .hidden {
     display: none;
 }
+
+.navigation {
+    margin-top: 20px;
+}
 </style>
 </head>
-
 <body>
+
+<div class="container">
 
 <h1>Master Your Knowledge</h1>
 
-<textarea id="inputText" placeholder="Hier deinen Lernstoff einfügen..."></textarea><br>
+<!-- CREATE SECTION -->
+<div id="createSection">
 
-<button class="primary" onclick="generateCards()">Karteikarten erstellen</button>
-<button class="secondary" onclick="startSpeech()">Sprechen</button>
-<button onclick="rateKnowledge()">Bewerten</button>
+<h2>Eigenen Stoff eingeben</h2>
+<textarea id="inputText" placeholder="Füge hier deinen Lernstoff ein..."></textarea>
+<br>
+<button onclick="generateCards()">Karteikarten erstellen</button>
 
-<div id="cardsContainer"></div>
+</div>
+
+<!-- PRACTICE SECTION -->
+<div id="practiceSection" class="hidden">
+
+<h2>Übungsmodus</h2>
+
+<div class="card" id="cardFront"></div>
+<div class="card hidden" id="cardBack"></div>
+
+<button onclick="flipCard()">Rückseite anzeigen</button>
+
+<div class="navigation">
+<button onclick="prevCard()">Vorherige</button>
+<button onclick="nextCard()">Nächste</button>
+</div>
+
+<hr>
+
+<button onclick="startSpeech()">Sprechen</button>
+<button onclick="evaluateSpeech()">Bewerten</button>
+
+<p id="feedback"></p>
+
+<br>
+<button onclick="backToCreate()">Neue Karten erstellen</button>
+
+</div>
+
+</div>
 
 <script>
+
 let cards = [];
-let currentIndex = 0;
-let showingAnswer = false;
+let currentCard = 0;
+let spokenText = "";
 
-// 🔹 Karteikarten generieren
+// Karteikarten generieren (einfache Demo-Logik)
 function generateCards() {
-    const text = document.getElementById("inputText").value;
-    const sentences = text.split(".").filter(s => s.trim() !== "");
 
-    cards = sentences.map(sentence => {
-        return {
-            question: "Erkläre: " + sentence.trim(),
-            answer: sentence.trim()
-        };
+    const text = document.getElementById("inputText").value;
+    if (!text) return alert("Bitte Lernstoff eingeben!");
+
+    // Einfache Trennung nach Punkten
+    const sentences = text.split(".");
+    cards = [];
+
+    sentences.forEach(sentence => {
+        if (sentence.trim().length > 10) {
+            cards.push({
+                question: "Erkläre: " + sentence.trim(),
+                answer: sentence.trim()
+            });
+        }
     });
 
-    currentIndex = 0;
+    if (cards.length === 0) {
+        alert("Nicht genug Inhalt für Karten.");
+        return;
+    }
+
+    currentCard = 0;
+    document.getElementById("createSection").classList.add("hidden");
+    document.getElementById("practiceSection").classList.remove("hidden");
+
     showCard();
 }
 
-// 🔹 Karte anzeigen
 function showCard() {
-    if (cards.length === 0) return;
+    document.getElementById("cardFront").innerText = cards[currentCard].question;
+    document.getElementById("cardBack").innerText = cards[currentCard].answer;
 
-    const container = document.getElementById("cardsContainer");
-    container.innerHTML = "";
-
-    const cardDiv = document.createElement("div");
-    cardDiv.className = "card";
-    cardDiv.innerText = showingAnswer 
-        ? cards[currentIndex].answer 
-        : cards[currentIndex].question;
-
-    cardDiv.onclick = () => {
-        showingAnswer = !showingAnswer;
-        showCard();
-    };
-
-    container.appendChild(cardDiv);
+    document.getElementById("cardBack").classList.add("hidden");
+    document.getElementById("feedback").innerText = "";
 }
 
-// 🔹 Sprachaufnahme
+function flipCard() {
+    document.getElementById("cardBack").classList.toggle("hidden");
+}
+
+function nextCard() {
+    if (currentCard < cards.length - 1) {
+        currentCard++;
+        showCard();
+    }
+}
+
+function prevCard() {
+    if (currentCard > 0) {
+        currentCard--;
+        showCard();
+    }
+}
+
+function backToCreate() {
+    document.getElementById("practiceSection").classList.add("hidden");
+    document.getElementById("createSection").classList.remove("hidden");
+    document.getElementById("inputText").value = "";
+}
+
+// Sprachfunktion
 function startSpeech() {
+
     if (!('webkitSpeechRecognition' in window)) {
-        alert("Sprachfunktion wird in diesem Browser nicht unterstützt (nutze Chrome).");
+        alert("Browser unterstützt keine Sprachaufnahme.");
         return;
     }
 
     const recognition = new webkitSpeechRecognition();
     recognition.lang = "de-DE";
-    recognition.start();
 
     recognition.onresult = function(event) {
-        const speechResult = event.results[0][0].transcript;
-        document.getElementById("inputText").value += " " + speechResult;
+        spokenText = event.results[0][0].transcript;
+        alert("Erkannt: " + spokenText);
     };
 
-    recognition.onerror = function() {
-        alert("Sprachaufnahme fehlgeschlagen.");
-    };
+    recognition.start();
 }
 
-// 🔹 Einfache Bewertung
-function rateKnowledge() {
-    if (cards.length === 0) {
-        alert("Erstelle erst Karteikarten!");
+// Einfache Bewertungslogik
+function evaluateSpeech() {
+
+    if (!spokenText) {
+        alert("Bitte erst sprechen!");
         return;
     }
 
-    alert("Du hast aktuell " + cards.length + " Karteikarten erstellt 💪");
+    const correctAnswer = cards[currentCard].answer.toLowerCase();
+    const userAnswer = spokenText.toLowerCase();
+
+    if (userAnswer.includes(correctAnswer.substring(0, 15))) {
+        document.getElementById("feedback").innerText = "Sehr gut! Inhalt stimmt größtenteils.";
+    } else {
+        document.getElementById("feedback").innerText = "Noch nicht ganz richtig. Versuch es nochmal.";
+    }
+
+    spokenText = "";
 }
+
 </script>
 
 </body>
