@@ -1,85 +1,150 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Master Your Knowledge</title>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #F5F7FA;
-            text-align: center;
-            padding: 40px;
-        }
-        .container {
-            max-width: 800px;
-            margin: auto;
-            background: white;
-            padding: 30px;
-            border-radius: 12px;
-            box-shadow: 0px 4px 20px rgba(0,0,0,0.1);
-        }
-        button {
-            background: #0B3C5D;
-            color: white;
-            padding: 12px 20px;
-            border: none;
-            border-radius: 8px;
-            cursor: pointer;
-            margin: 10px;
-        }
-        textarea {
-            width: 100%;
-            height: 150px;
-            margin: 10px 0;
-        }
-        .feedback {
-            background: #eaf2f8;
-            padding: 20px;
-            margin-top: 20px;
-            border-radius: 10px;
-        }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Master Your Knowledge</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: #0f172a;
+    color: white;
+    text-align: center;
+    padding: 30px;
+}
+
+textarea {
+    width: 80%;
+    height: 150px;
+    padding: 10px;
+    border-radius: 10px;
+    border: none;
+    font-size: 16px;
+}
+
+button {
+    padding: 10px 20px;
+    margin: 10px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.primary {
+    background: #3b82f6;
+    color: white;
+}
+
+.secondary {
+    background: #10b981;
+    color: white;
+}
+
+.card {
+    background: white;
+    color: black;
+    padding: 20px;
+    margin: 20px auto;
+    width: 60%;
+    border-radius: 15px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+.hidden {
+    display: none;
+}
+</style>
 </head>
+
 <body>
-    <div class="container">
-        <h1>Master Your Knowledge</h1>
-        <h3>Eigenen Stoff eingeben</h3>
-        <textarea id="userInput" placeholder="Gib hier deinen Lernstoff ein oder lade eine Datei hoch."></textarea>
-        <br>
-        <button onclick="startRecognition()">🎤 Sprechen</button>
-        <p id="transcript"></p>
-        <br>
-        <button onclick="evaluate()">Bewerten</button>
-        <div class="feedback" id="feedback" style="display:none;">
-            <h3>KI-Feedback</h3>
-            <p id="result">Hier wird das Feedback angezeigt.</p>
-        </div>
-    </div>
-    <script>
-        let finalTranscript = "";
 
-        function startRecognition() {
-            const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition)();
-            recognition.lang = "de-DE";
-            recognition.start();
+<h1>Master Your Knowledge</h1>
 
-            recognition.onresult = function(event) {
-                finalTranscript = event.results[0][0].transcript;
-                document.getElementById("transcript").innerText = finalTranscript;
-            };
-        }
+<textarea id="inputText" placeholder="Hier deinen Lernstoff einfügen..."></textarea><br>
 
-        function evaluate() {
-            const userText = document.getElementById("userInput").value || finalTranscript;
+<button class="primary" onclick="generateCards()">Karteikarten erstellen</button>
+<button class="secondary" onclick="startSpeech()">Sprechen</button>
+<button onclick="rateKnowledge()">Bewerten</button>
 
-            // Hier später die KI-Integration einfügen
-            // Momentan simulieren wir nur ein Feedback
-            const feedback = "Das ist ein Beispiel-Feedback. Hier könntest du später KI-gestütztes Feedback anzeigen.";
+<div id="cardsContainer"></div>
 
-            document.getElementById("feedback").style.display = "block";
-            document.getElementById("result").innerText = feedback;
-        }
-    </script>
+<script>
+let cards = [];
+let currentIndex = 0;
+let showingAnswer = false;
+
+// 🔹 Karteikarten generieren
+function generateCards() {
+    const text = document.getElementById("inputText").value;
+    const sentences = text.split(".").filter(s => s.trim() !== "");
+
+    cards = sentences.map(sentence => {
+        return {
+            question: "Erkläre: " + sentence.trim(),
+            answer: sentence.trim()
+        };
+    });
+
+    currentIndex = 0;
+    showCard();
+}
+
+// 🔹 Karte anzeigen
+function showCard() {
+    if (cards.length === 0) return;
+
+    const container = document.getElementById("cardsContainer");
+    container.innerHTML = "";
+
+    const cardDiv = document.createElement("div");
+    cardDiv.className = "card";
+    cardDiv.innerText = showingAnswer 
+        ? cards[currentIndex].answer 
+        : cards[currentIndex].question;
+
+    cardDiv.onclick = () => {
+        showingAnswer = !showingAnswer;
+        showCard();
+    };
+
+    container.appendChild(cardDiv);
+}
+
+// 🔹 Sprachaufnahme
+function startSpeech() {
+    if (!('webkitSpeechRecognition' in window)) {
+        alert("Sprachfunktion wird in diesem Browser nicht unterstützt (nutze Chrome).");
+        return;
+    }
+
+    const recognition = new webkitSpeechRecognition();
+    recognition.lang = "de-DE";
+    recognition.start();
+
+    recognition.onresult = function(event) {
+        const speechResult = event.results[0][0].transcript;
+        document.getElementById("inputText").value += " " + speechResult;
+    };
+
+    recognition.onerror = function() {
+        alert("Sprachaufnahme fehlgeschlagen.");
+    };
+}
+
+// 🔹 Einfache Bewertung
+function rateKnowledge() {
+    if (cards.length === 0) {
+        alert("Erstelle erst Karteikarten!");
+        return;
+    }
+
+    alert("Du hast aktuell " + cards.length + " Karteikarten erstellt 💪");
+}
+</script>
+
 </body>
 </html>
+
