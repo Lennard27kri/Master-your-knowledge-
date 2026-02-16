@@ -1,10 +1,9 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Lernwerkzeug</title>
-
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Master Your Knowledge MVP</title>
 <style>
 :root {
   --bg: #f6f8fa;
@@ -12,235 +11,251 @@
   --navy-mid: #1e293b;
   --navy-soft: #334155;
   --border: #e2e8f0;
+  --accent: #38bdf8;
 }
 
-* {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-}
+* { box-sizing:border-box; margin:0; padding:0; font-family: -apple-system,BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+body { background: var(--bg); display:flex; justify-content:center; align-items:flex-start; min-height:100vh; padding-top:50px; }
+.container { width: 650px; background:white; border:1px solid var(--border); border-radius:20px; padding:40px 30px; box-shadow:0 10px 40px rgba(15,23,42,0.05); position:relative;}
+h1 { font-size:24px; font-weight:600; margin-bottom:25px; color:var(--navy-dark);}
+textarea { width:100%; height:120px; border-radius:12px; border:1px solid var(--border); padding:15px; font-size:15px; resize:none; margin-bottom:20px; transition:border 0.2s ease;}
+textarea:focus { outline:none; border:1px solid var(--navy-soft);}
+button { padding:10px 18px; border-radius:10px; border:1px solid var(--border); background:white; cursor:pointer; font-weight:500; transition:all 0.2s ease;}
+button:hover { background:#f1f5f9;}
+.card { background:white; border:1px solid var(--border); border-radius:16px; padding:25px; margin-bottom:20px; box-shadow:0 4px 20px rgba(15,23,42,0.04);}
+.button-row { display:flex; gap:12px; margin-bottom:20px;}
+.progress-bar { width:100%; background:#e2e8f0; height:8px; border-radius:10px; margin-top:15px;}
+.progress-fill { height:8px; width:0%; background:var(--accent); border-radius:10px; transition:0.3s;}
+.result { font-size:14px; color:var(--navy-soft); margin-top:10px;}
+.hidden { display:none; }
 
-body {
-  background: var(--bg);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-  color: var(--navy-dark);
-}
+/* Info-Button */
+.info-btn { position:absolute; top:20px; right:20px; width:36px; height:36px; border-radius:50%; border:1px solid #cbd5e1; background:white; color:var(--navy-dark); font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; }
+.info-btn:hover { background:#f1f5f9;}
+.info-panel { position:absolute; top:70px; right:20px; width:260px; background:white; border:1px solid var(--border); border-radius:14px; padding:18px; box-shadow:0 15px 40px rgba(15,23,42,0.08); opacity:0; transform:translateY(-10px); pointer-events:none; transition:all 0.25s ease;}
+.info-panel.active { opacity:1; transform:translateY(0); pointer-events:auto;}
+.info-panel h3 { font-size:14px; margin-bottom:8px; color:var(--navy-dark);}
+.info-panel ul { font-size:13px; color:var(--navy-soft); padding-left:18px;}
 
-.container {
-  position: relative;
-  width: 600px;
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 20px;
-  padding: 50px 40px;
-  box-shadow: 0 10px 40px rgba(15, 23, 42, 0.05);
-}
-
-h1 {
-  font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 25px;
-}
-
-textarea {
-  width: 100%;
-  height: 120px;
-  border-radius: 12px;
-  border: 1px solid var(--border);
-  padding: 15px;
-  font-size: 15px;
-  resize: none;
-  margin-bottom: 20px;
-  transition: border 0.2s ease;
-}
-
-textarea:focus {
-  outline: none;
-  border: 1px solid var(--navy-soft);
-}
-
-.button-row {
-  display: flex;
-  gap: 15px;
-}
-
-button {
-  padding: 10px 18px;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-  background: white;
-  cursor: pointer;
-  font-weight: 500;
-  transition: all 0.2s ease;
-}
-
-button:hover {
-  background: #f1f5f9;
-}
-
-.active {
-  border: 1px solid var(--navy-mid);
-  background: #f1f5f9;
-}
-
-.result {
-  margin-top: 25px;
-  font-size: 14px;
-  color: var(--navy-soft);
-}
-
-/* INFO BUTTON */
-.info-btn {
-  position: absolute;
-  top: 20px;
-  right: 20px;
-  width: 36px;
-  height: 36px;
-  border-radius: 50%;
-  border: 1px solid #cbd5e1;
-  background: white;
-  color: var(--navy-dark);
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.info-btn:hover {
-  background: #f1f5f9;
-}
-
-/* INFO PANEL */
-.info-panel {
-  position: absolute;
-  top: 70px;
-  right: 20px;
-  width: 260px;
-  background: white;
-  border: 1px solid var(--border);
-  border-radius: 14px;
-  padding: 18px;
-  box-shadow: 0 15px 40px rgba(15, 23, 42, 0.08);
-  opacity: 0;
-  transform: translateY(-10px);
-  pointer-events: none;
-  transition: all 0.25s ease;
-}
-
-.info-panel.active {
-  opacity: 1;
-  transform: translateY(0);
-  pointer-events: auto;
-}
-
-.info-panel h3 {
-  font-size: 14px;
-  margin-bottom: 8px;
-}
-
-.info-panel ul {
-  font-size: 13px;
-  color: var(--navy-soft);
-  padding-left: 18px;
-}
+/* Karteikarten Übersicht */
+.card-list { margin-bottom:20px;}
+.card-list-item { background:var(--bg); padding:12px 15px; border-radius:12px; margin-bottom:8px; cursor:pointer; border:1px solid var(--border);}
+.card-list-item:hover { background:#f1f5f9;}
 </style>
 </head>
-
 <body>
 
 <div class="container">
-  <button class="info-btn" id="infoBtn">i</button>
 
+  <button class="info-btn" id="infoBtn">i</button>
   <div class="info-panel" id="infoPanel">
     <h3 id="methodTitle"></h3>
     <ul id="methodFacts"></ul>
   </div>
 
-  <h1>Erkläre das Thema in eigenen Worten</h1>
-
-  <textarea id="answer" placeholder="Schreibe oder erkläre hier..."></textarea>
-
-  <div class="button-row">
-    <button id="textMode" class="active">Textmodus</button>
-    <button id="voiceMode">Sprachmodus</button>
+  <div id="loginSection">
+    <h1>Willkommen!</h1>
+    <input type="text" id="username" placeholder="Dein Name">
+    <button onclick="login()">Start</button>
   </div>
 
-  <div class="result" id="result"></div>
+  <div id="createSection" class="hidden">
+    <h1>Füge deinen Lernstoff ein</h1>
+    <textarea id="inputText" placeholder="Hier dein Text..."></textarea>
+    <button onclick="generateCards()">Karteikarten erstellen</button>
+  </div>
+
+  <div id="overviewSection" class="hidden">
+    <h1>Deine Karteikarten</h1>
+    <div class="card-list" id="cardList"></div>
+    <button onclick="startLearning()">Lernen starten</button>
+  </div>
+
+  <div id="practiceSection" class="hidden">
+    <h1>Karteikarte lernen</h1>
+    <div class="card" id="cardFront"></div>
+    <div class="card hidden" id="cardBack"></div>
+
+    <div class="button-row">
+      <button id="textMode" class="active">Textmodus</button>
+      <button id="voiceMode">Sprachmodus</button>
+    </div>
+
+    <button onclick="flipCard()">Antwort anzeigen</button>
+    <button onclick="startSpeech()" id="micButton" class="hidden">🎤 Mikrofon starten</button>
+    <div class="result" id="transcript"></div>
+    <button onclick="checkAnswer()" id="checkButton" class="hidden">Prüfen</button>
+
+    <div class="progress-bar">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="result" id="scoreBox"></div>
+
+    <button onclick="nextCard()">Nächste Karte</button>
+  </div>
+
 </div>
 
 <script>
-let currentMode = "text";
+let username="";
+let cards=[];
+let currentCard=0;
+let score=0;
+let currentMode="text";
+let recognition;
 
-const infoBtn = document.getElementById("infoBtn");
-const infoPanel = document.getElementById("infoPanel");
-const methodTitle = document.getElementById("methodTitle");
-const methodFacts = document.getElementById("methodFacts");
+function login(){
+  username=document.getElementById("username").value;
+  if(!username) return alert("Bitte Name eingeben!");
+  document.getElementById("loginSection").classList.add("hidden");
+  document.getElementById("createSection").classList.remove("hidden");
+}
 
-const textModeBtn = document.getElementById("textMode");
-const voiceModeBtn = document.getElementById("voiceMode");
+// Karteikarten erstellen
+function generateCards(){
+  const text=document.getElementById("inputText").value;
+  const parts=text.split(".");
+  cards=[];
+  parts.forEach(p=>{
+    if(p.trim().length>5){
+      cards.push({question:"Erkläre: "+p.trim(), answer:p.trim(), level:0});
+    }
+  });
+  if(cards.length===0) return alert("Text zu kurz!");
+  document.getElementById("createSection").classList.add("hidden");
+  document.getElementById("overviewSection").classList.remove("hidden");
+  renderCardList();
+}
 
-function updateInfo() {
-  methodFacts.innerHTML = "";
+// Karteikarten Übersicht
+function renderCardList(){
+  const list=document.getElementById("cardList");
+  list.innerHTML="";
+  cards.forEach((c,i)=>{
+    const div=document.createElement("div");
+    div.textContent=c.question;
+    div.className="card-list-item";
+    div.onclick=()=>{
+      currentCard=i;
+      startLearning();
+    }
+    list.appendChild(div);
+  });
+}
 
-  if (currentMode === "text") {
-    methodTitle.textContent = "Aktive Methode: Verständnisprüfung";
+// Lernmodus starten
+function startLearning(){
+  document.getElementById("overviewSection").classList.add("hidden");
+  document.getElementById("practiceSection").classList.remove("hidden");
+  showCard();
+}
 
-    const facts = [
-      "Deine Antwort wird inhaltlich analysiert",
-      "Ziel ist Verständnis, nicht Wortgenauigkeit"
-    ];
+// Karte anzeigen
+function showCard(){
+  document.getElementById("cardFront").innerText=cards[currentCard].question;
+  document.getElementById("cardBack").innerText=cards[currentCard].answer;
+  document.getElementById("cardBack").classList.add("hidden");
+  updateProgress();
+  currentMode="text";
+  updateInfo();
+  document.getElementById("micButton").classList.add("hidden");
+  document.getElementById("checkButton").classList.add("hidden");
+  document.getElementById("transcript").innerText="";
+}
 
-    facts.forEach(fact => {
-      const li = document.createElement("li");
-      li.textContent = fact;
-      methodFacts.appendChild(li);
-    });
+// Flip Karte
+function flipCard(){
+  document.getElementById("cardBack").classList.remove("hidden");
+}
 
+// Fortschritt
+function updateProgress(){
+  let percent=((currentCard+1)/cards.length)*100;
+  document.getElementById("progressFill").style.width=percent+"%";
+  document.getElementById("scoreBox").innerText="Karte "+(currentCard+1)+" / "+cards.length+" | Punkte: "+score;
+}
+
+// Nächste Karte
+function nextCard(){
+  if(currentCard<cards.length-1){
+    currentCard++;
+    showCard();
   } else {
-    methodTitle.textContent = "Aktive Methode: Selbst-Erklärung";
+    alert("Lernsession beendet! Punkte: "+score);
+  }
+}
 
-    const facts = [
-      "Du erklärst das Thema in eigenen Worten",
-      "Wir prüfen Struktur und Kernaussagen"
-    ];
+// Modus wechseln
+document.getElementById("textMode").addEventListener("click", ()=>{
+  currentMode="text";
+  document.getElementById("textMode").classList.add("active");
+  document.getElementById("voiceMode").classList.remove("active");
+  updateInfo();
+  document.getElementById("micButton").classList.add("hidden");
+  document.getElementById("checkButton").classList.add("hidden");
+  document.getElementById("transcript").innerText="";
+});
 
-    facts.forEach(fact => {
-      const li = document.createElement("li");
-      li.textContent = fact;
-      methodFacts.appendChild(li);
+document.getElementById("voiceMode").addEventListener("click", ()=>{
+  currentMode="voice";
+  document.getElementById("voiceMode").classList.add("active");
+  document.getElementById("textMode").classList.remove("active");
+  updateInfo();
+  document.getElementById("micButton").classList.remove("hidden");
+  document.getElementById("checkButton").classList.remove("hidden");
+});
+
+// Info Panel
+const infoBtn=document.getElementById("infoBtn");
+const infoPanel=document.getElementById("infoPanel");
+infoBtn.addEventListener("click", ()=>{infoPanel.classList.toggle("active");});
+document.addEventListener("click",(e)=>{
+  if(!infoPanel.contains(e.target)&&!infoBtn.contains(e.target)) infoPanel.classList.remove("active");
+});
+function updateInfo(){
+  const title=document.getElementById("methodTitle");
+  const facts=document.getElementById("methodFacts");
+  facts.innerHTML="";
+  if(currentMode==="text"){
+    title.textContent="Aktive Methode: Verständnisprüfung";
+    ["Antwort wird inhaltlich analysiert","Ziel ist Verständnis, nicht Wortgenauigkeit"].forEach(f=>{
+      const li=document.createElement("li"); li.textContent=f; facts.appendChild(li);
+    });
+  } else {
+    title.textContent="Aktive Methode: Selbst-Erklärung";
+    ["Du erklärst das Thema in eigenen Worten","Wir prüfen Struktur und Kernaussagen"].forEach(f=>{
+      const li=document.createElement("li"); li.textContent=f; facts.appendChild(li);
     });
   }
 }
 
-infoBtn.addEventListener("click", () => {
-  infoPanel.classList.toggle("active");
-});
-
-document.addEventListener("click", (e) => {
-  if (!infoPanel.contains(e.target) && !infoBtn.contains(e.target)) {
-    infoPanel.classList.remove("active");
+// Sprachaufnahme
+function startSpeech(){
+  if(!('webkitSpeechRecognition' in window)) return alert("Browser unterstützt Spracheingabe nicht");
+  recognition=new webkitSpeechRecognition();
+  recognition.lang="de-DE";
+  recognition.onresult=(event)=>{
+    const transcript=event.results[0][0].transcript;
+    document.getElementById("transcript").innerText=transcript;
   }
-});
+  recognition.start();
+}
 
-textModeBtn.addEventListener("click", () => {
-  currentMode = "text";
-  textModeBtn.classList.add("active");
-  voiceModeBtn.classList.remove("active");
-  updateInfo();
-});
-
-voiceModeBtn.addEventListener("click", () => {
-  currentMode = "voice";
-  voiceModeBtn.classList.add("active");
-  textModeBtn.classList.remove("active");
-  updateInfo();
-});
-
-updateInfo();
+// Prüfen simuliert
+function checkAnswer(){
+  const userAnswer=document.getElementById("transcript").innerText.toLowerCase();
+  const keyPoints=cards[currentCard].answer.toLowerCase().split(" ").filter(w=>w.length>3);
+  let hit=0;
+  let missing=[];
+  keyPoints.forEach(word=>{
+    if(userAnswer.includes(word)) hit++;
+    else missing.push(word);
+  });
+  const percent=Math.round((hit/keyPoints.length)*100);
+  score+=percent>70?2:percent>40?1:0;
+  document.getElementById("scoreBox").innerText="Punkte: "+score+" | Inhalt erreicht: "+percent+"%";
+  document.getElementById("transcript").innerText+="\n\nFehlende Punkte / Wörter: "+missing.join(", ");
+}
 </script>
-
 </body>
 </html>
