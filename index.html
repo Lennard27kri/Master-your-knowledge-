@@ -1,221 +1,246 @@
 <!DOCTYPE html>
 <html lang="de">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Master Your Knowledge</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Lernwerkzeug</title>
 
 <style>
+:root {
+  --bg: #f6f8fa;
+  --navy-dark: #0f172a;
+  --navy-mid: #1e293b;
+  --navy-soft: #334155;
+  --border: #e2e8f0;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #f4f6f9;
-    text-align: center;
-    padding: 20px;
+  background: var(--bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  color: var(--navy-dark);
 }
 
 .container {
-    max-width: 700px;
-    margin: auto;
-    background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0px 5px 15px rgba(0,0,0,0.1);
+  position: relative;
+  width: 600px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 50px 40px;
+  box-shadow: 0 10px 40px rgba(15, 23, 42, 0.05);
+}
+
+h1 {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 25px;
 }
 
 textarea {
-    width: 100%;
-    height: 150px;
-    margin-top: 10px;
-    padding: 10px;
+  width: 100%;
+  height: 120px;
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 15px;
+  font-size: 15px;
+  resize: none;
+  margin-bottom: 20px;
+  transition: border 0.2s ease;
+}
+
+textarea:focus {
+  outline: none;
+  border: 1px solid var(--navy-soft);
+}
+
+.button-row {
+  display: flex;
+  gap: 15px;
 }
 
 button {
-    margin: 10px;
-    padding: 10px 20px;
-    border: none;
-    background-color: #4a6cf7;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
+  padding: 10px 18px;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  background: white;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.2s ease;
 }
 
 button:hover {
-    background-color: #334fd1;
+  background: #f1f5f9;
 }
 
-.card {
-    margin-top: 20px;
-    padding: 20px;
-    border: 2px solid #4a6cf7;
-    border-radius: 10px;
-    min-height: 100px;
-    font-size: 18px;
+.active {
+  border: 1px solid var(--navy-mid);
+  background: #f1f5f9;
 }
 
-.hidden {
-    display: none;
+.result {
+  margin-top: 25px;
+  font-size: 14px;
+  color: var(--navy-soft);
 }
 
-.navigation {
-    margin-top: 20px;
+/* INFO BUTTON */
+.info-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid #cbd5e1;
+  background: white;
+  color: var(--navy-dark);
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.info-btn:hover {
+  background: #f1f5f9;
+}
+
+/* INFO PANEL */
+.info-panel {
+  position: absolute;
+  top: 70px;
+  right: 20px;
+  width: 260px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 18px;
+  box-shadow: 0 15px 40px rgba(15, 23, 42, 0.08);
+  opacity: 0;
+  transform: translateY(-10px);
+  pointer-events: none;
+  transition: all 0.25s ease;
+}
+
+.info-panel.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.info-panel h3 {
+  font-size: 14px;
+  margin-bottom: 8px;
+}
+
+.info-panel ul {
+  font-size: 13px;
+  color: var(--navy-soft);
+  padding-left: 18px;
 }
 </style>
 </head>
+
 <body>
 
 <div class="container">
+  <button class="info-btn" id="infoBtn">i</button>
 
-<h1>Master Your Knowledge</h1>
+  <div class="info-panel" id="infoPanel">
+    <h3 id="methodTitle"></h3>
+    <ul id="methodFacts"></ul>
+  </div>
 
-<!-- CREATE SECTION -->
-<div id="createSection">
+  <h1>Erkläre das Thema in eigenen Worten</h1>
 
-<h2>Eigenen Stoff eingeben</h2>
-<textarea id="inputText" placeholder="Füge hier deinen Lernstoff ein..."></textarea>
-<br>
-<button onclick="generateCards()">Karteikarten erstellen</button>
+  <textarea id="answer" placeholder="Schreibe oder erkläre hier..."></textarea>
 
-</div>
+  <div class="button-row">
+    <button id="textMode" class="active">Textmodus</button>
+    <button id="voiceMode">Sprachmodus</button>
+  </div>
 
-<!-- PRACTICE SECTION -->
-<div id="practiceSection" class="hidden">
-
-<h2>Übungsmodus</h2>
-
-<div class="card" id="cardFront"></div>
-<div class="card hidden" id="cardBack"></div>
-
-<button onclick="flipCard()">Rückseite anzeigen</button>
-
-<div class="navigation">
-<button onclick="prevCard()">Vorherige</button>
-<button onclick="nextCard()">Nächste</button>
-</div>
-
-<hr>
-
-<button onclick="startSpeech()">Sprechen</button>
-<button onclick="evaluateSpeech()">Bewerten</button>
-
-<p id="feedback"></p>
-
-<br>
-<button onclick="backToCreate()">Neue Karten erstellen</button>
-
-</div>
-
+  <div class="result" id="result"></div>
 </div>
 
 <script>
+let currentMode = "text";
 
-let cards = [];
-let currentCard = 0;
-let spokenText = "";
+const infoBtn = document.getElementById("infoBtn");
+const infoPanel = document.getElementById("infoPanel");
+const methodTitle = document.getElementById("methodTitle");
+const methodFacts = document.getElementById("methodFacts");
 
-// Karteikarten generieren (einfache Demo-Logik)
-function generateCards() {
+const textModeBtn = document.getElementById("textMode");
+const voiceModeBtn = document.getElementById("voiceMode");
 
-    const text = document.getElementById("inputText").value;
-    if (!text) return alert("Bitte Lernstoff eingeben!");
+function updateInfo() {
+  methodFacts.innerHTML = "";
 
-    // Einfache Trennung nach Punkten
-    const sentences = text.split(".");
-    cards = [];
+  if (currentMode === "text") {
+    methodTitle.textContent = "Aktive Methode: Verständnisprüfung";
 
-    sentences.forEach(sentence => {
-        if (sentence.trim().length > 10) {
-            cards.push({
-                question: "Erkläre: " + sentence.trim(),
-                answer: sentence.trim()
-            });
-        }
+    const facts = [
+      "Deine Antwort wird inhaltlich analysiert",
+      "Ziel ist Verständnis, nicht Wortgenauigkeit"
+    ];
+
+    facts.forEach(fact => {
+      const li = document.createElement("li");
+      li.textContent = fact;
+      methodFacts.appendChild(li);
     });
 
-    if (cards.length === 0) {
-        alert("Nicht genug Inhalt für Karten.");
-        return;
-    }
+  } else {
+    methodTitle.textContent = "Aktive Methode: Selbst-Erklärung";
 
-    currentCard = 0;
-    document.getElementById("createSection").classList.add("hidden");
-    document.getElementById("practiceSection").classList.remove("hidden");
+    const facts = [
+      "Du erklärst das Thema in eigenen Worten",
+      "Wir prüfen Struktur und Kernaussagen"
+    ];
 
-    showCard();
+    facts.forEach(fact => {
+      const li = document.createElement("li");
+      li.textContent = fact;
+      methodFacts.appendChild(li);
+    });
+  }
 }
 
-function showCard() {
-    document.getElementById("cardFront").innerText = cards[currentCard].question;
-    document.getElementById("cardBack").innerText = cards[currentCard].answer;
+infoBtn.addEventListener("click", () => {
+  infoPanel.classList.toggle("active");
+});
 
-    document.getElementById("cardBack").classList.add("hidden");
-    document.getElementById("feedback").innerText = "";
-}
+document.addEventListener("click", (e) => {
+  if (!infoPanel.contains(e.target) && !infoBtn.contains(e.target)) {
+    infoPanel.classList.remove("active");
+  }
+});
 
-function flipCard() {
-    document.getElementById("cardBack").classList.toggle("hidden");
-}
+textModeBtn.addEventListener("click", () => {
+  currentMode = "text";
+  textModeBtn.classList.add("active");
+  voiceModeBtn.classList.remove("active");
+  updateInfo();
+});
 
-function nextCard() {
-    if (currentCard < cards.length - 1) {
-        currentCard++;
-        showCard();
-    }
-}
+voiceModeBtn.addEventListener("click", () => {
+  currentMode = "voice";
+  voiceModeBtn.classList.add("active");
+  textModeBtn.classList.remove("active");
+  updateInfo();
+});
 
-function prevCard() {
-    if (currentCard > 0) {
-        currentCard--;
-        showCard();
-    }
-}
-
-function backToCreate() {
-    document.getElementById("practiceSection").classList.add("hidden");
-    document.getElementById("createSection").classList.remove("hidden");
-    document.getElementById("inputText").value = "";
-}
-
-// Sprachfunktion
-function startSpeech() {
-
-    if (!('webkitSpeechRecognition' in window)) {
-        alert("Browser unterstützt keine Sprachaufnahme.");
-        return;
-    }
-
-    const recognition = new webkitSpeechRecognition();
-    recognition.lang = "de-DE";
-
-    recognition.onresult = function(event) {
-        spokenText = event.results[0][0].transcript;
-        alert("Erkannt: " + spokenText);
-    };
-
-    recognition.start();
-}
-
-// Einfache Bewertungslogik
-function evaluateSpeech() {
-
-    if (!spokenText) {
-        alert("Bitte erst sprechen!");
-        return;
-    }
-
-    const correctAnswer = cards[currentCard].answer.toLowerCase();
-    const userAnswer = spokenText.toLowerCase();
-
-    if (userAnswer.includes(correctAnswer.substring(0, 15))) {
-        document.getElementById("feedback").innerText = "Sehr gut! Inhalt stimmt größtenteils.";
-    } else {
-        document.getElementById("feedback").innerText = "Noch nicht ganz richtig. Versuch es nochmal.";
-    }
-
-    spokenText = "";
-}
-
+updateInfo();
 </script>
 
 </body>
 </html>
-
