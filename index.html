@@ -6,45 +6,39 @@
 <title>Master Your Knowledge MVP</title>
 <style>
 :root {
-  --bg: #f6f8fa;
-  --navy-dark: #0f172a;
-  --navy-mid: #1e293b;
-  --navy-soft: #334155;
-  --border: #e2e8f0;
-  --accent: #38bdf8;
+  --bg:#f6f8fa;
+  --navy-dark:#0f172a;
+  --navy-mid:#1e293b;
+  --navy-soft:#334155;
+  --border:#e2e8f0;
+  --accent:#38bdf8;
 }
-
-* { box-sizing:border-box; margin:0; padding:0; font-family: -apple-system,BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
-body { background: var(--bg); display:flex; justify-content:center; align-items:flex-start; min-height:100vh; padding-top:50px; }
-.container { width: 650px; background:white; border:1px solid var(--border); border-radius:20px; padding:40px 30px; box-shadow:0 10px 40px rgba(15,23,42,0.05); position:relative;}
-h1 { font-size:24px; font-weight:600; margin-bottom:25px; color:var(--navy-dark);}
-textarea { width:100%; height:120px; border-radius:12px; border:1px solid var(--border); padding:15px; font-size:15px; resize:none; margin-bottom:20px; transition:border 0.2s ease;}
-textarea:focus { outline:none; border:1px solid var(--navy-soft);}
-button { padding:10px 18px; border-radius:10px; border:1px solid var(--border); background:white; cursor:pointer; font-weight:500; transition:all 0.2s ease;}
-button:hover { background:#f1f5f9;}
-.card { background:white; border:1px solid var(--border); border-radius:16px; padding:25px; margin-bottom:20px; box-shadow:0 4px 20px rgba(15,23,42,0.04);}
-.button-row { display:flex; gap:12px; margin-bottom:20px;}
-.progress-bar { width:100%; background:#e2e8f0; height:8px; border-radius:10px; margin-top:15px;}
-.progress-fill { height:8px; width:0%; background:var(--accent); border-radius:10px; transition:0.3s;}
-.result { font-size:14px; color:var(--navy-soft); margin-top:10px;}
-.hidden { display:none; }
-
-/* Info-Button */
-.info-btn { position:absolute; top:20px; right:20px; width:36px; height:36px; border-radius:50%; border:1px solid #cbd5e1; background:white; color:var(--navy-dark); font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; }
-.info-btn:hover { background:#f1f5f9;}
-.info-panel { position:absolute; top:70px; right:20px; width:260px; background:white; border:1px solid var(--border); border-radius:14px; padding:18px; box-shadow:0 15px 40px rgba(15,23,42,0.08); opacity:0; transform:translateY(-10px); pointer-events:none; transition:all 0.25s ease;}
-.info-panel.active { opacity:1; transform:translateY(0); pointer-events:auto;}
-.info-panel h3 { font-size:14px; margin-bottom:8px; color:var(--navy-dark);}
-.info-panel ul { font-size:13px; color:var(--navy-soft); padding-left:18px;}
-
-/* Karteikarten Übersicht */
-.card-list { margin-bottom:20px;}
-.card-list-item { background:var(--bg); padding:12px 15px; border-radius:12px; margin-bottom:8px; cursor:pointer; border:1px solid var(--border);}
-.card-list-item:hover { background:#f1f5f9;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;}
+body{background:var(--bg);display:flex;justify-content:center;align-items:flex-start;min-height:100vh;padding-top:50px;}
+.container{width:700px;background:white;border:1px solid var(--border);border-radius:20px;padding:40px 30px;box-shadow:0 10px 40px rgba(15,23,42,0.05);position:relative;}
+h1{font-size:24px;font-weight:600;margin-bottom:25px;color:var(--navy-dark);}
+input, select, textarea{width:100%;padding:12px 15px;margin-bottom:15px;border:1px solid var(--border);border-radius:12px;font-size:15px;}
+textarea{height:120px;resize:none;}
+input:focus, textarea:focus, select:focus{outline:none;border:1px solid var(--navy-soft);}
+button{padding:10px 18px;border-radius:10px;border:1px solid var(--border);background:white;cursor:pointer;font-weight:500;transition:all 0.2s ease;margin-right:5px;}
+button:hover{background:#f1f5f9;}
+.hidden{display:none;}
+.card-list-item{background:var(--bg);padding:12px 15px;border-radius:12px;margin-bottom:8px;cursor:pointer;border:1px solid var(--border);}
+.card-list-item:hover{background:#f1f5f9;}
+.card{background:white;border:1px solid var(--border);border-radius:16px;padding:25px;margin-bottom:15px;box-shadow:0 4px 20px rgba(15,23,42,0.04);font-size:18px;cursor:pointer;text-align:center;}
+.button-row{display:flex;gap:12px;margin-bottom:20px;}
+.progress-bar{width:100%;background:#e2e8f0;height:8px;border-radius:10px;margin-top:15px;}
+.progress-fill{height:8px;width:0%;background:var(--accent);border-radius:10px;transition:0.3s;}
+.result{font-size:14px;color:var(--navy-soft);margin-top:10px;}
+.info-btn{position:absolute;top:20px;right:20px;width:36px;height:36px;border-radius:50%;border:1px solid #cbd5e1;background:white;color:var(--navy-dark);font-weight:600;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.info-btn:hover{background:#f1f5f9;}
+.info-panel{position:absolute;top:70px;right:20px;width:260px;background:white;border:1px solid var(--border);border-radius:14px;padding:18px;box-shadow:0 15px 40px rgba(15,23,42,0.08);opacity:0;transform:translateY(-10px);pointer-events:none;transition:all 0.25s ease;}
+.info-panel.active{opacity:1;transform:translateY(0);pointer-events:auto;}
+.info-panel h3{font-size:14px;margin-bottom:8px;color:var(--navy-dark);}
+.info-panel ul{font-size:13px;color:var(--navy-soft);padding-left:18px;}
 </style>
 </head>
 <body>
-
 <div class="container">
 
   <button class="info-btn" id="infoBtn">i</button>
@@ -53,26 +47,53 @@ button:hover { background:#f1f5f9;}
     <ul id="methodFacts"></ul>
   </div>
 
+  <!-- Login / Registrierung -->
   <div id="loginSection">
-    <h1>Willkommen!</h1>
-    <input type="text" id="username" placeholder="Dein Name">
-    <button onclick="login()">Start</button>
+    <h1>Registrierung</h1>
+    <select id="salutation">
+      <option value="">Anrede wählen</option>
+      <option value="Herr">Herr</option>
+      <option value="Frau">Frau</option>
+    </select>
+    <input type="text" id="firstName" placeholder="Vorname">
+    <input type="text" id="lastName" placeholder="Nachname">
+    <button onclick="login()">Registrieren</button>
   </div>
 
+  <!-- Startbildschirm -->
+  <div id="startScreen" class="hidden">
+    <h1 id="welcomeText"></h1>
+    <button onclick="showTopics()">Meine Lernthemen</button>
+  </div>
+
+  <!-- Lernthemen Übersicht -->
+  <div id="overviewSection" class="hidden">
+    <h1>Deine Lernthemen</h1>
+    <div class="card-list" id="cardList"></div>
+    <button onclick="createNewTopic()">+ Neues Thema</button>
+  </div>
+
+  <!-- Neues Thema erstellen -->
   <div id="createSection" class="hidden">
-    <h1>Füge deinen Lernstoff ein</h1>
-    <textarea id="inputText" placeholder="Hier dein Text..."></textarea>
+    <h1>Neues Thema hinzufügen</h1>
+    <input type="text" id="topicName" placeholder="Thema Name">
+    <textarea id="inputText" placeholder="Hier deinen Lernstoff einfügen..."></textarea>
     <button onclick="generateCards()">Karteikarten erstellen</button>
   </div>
 
-  <div id="overviewSection" class="hidden">
-    <h1>Deine Karteikarten</h1>
-    <div class="card-list" id="cardList"></div>
-    <button onclick="startLearning()">Lernen starten</button>
+  <!-- Karten bearbeiten -->
+  <div id="editSection" class="hidden">
+    <h1>Karten bearbeiten</h1>
+    <div id="editCards"></div>
+    <textarea id="newCardText" placeholder="Neue Karte hinzufügen..."></textarea>
+    <button onclick="addCard()">Hinzufügen</button>
+    <button onclick="saveCards()">Speichern</button>
+    <button onclick="backToOverview()">Zurück</button>
   </div>
 
+  <!-- Lernmodus -->
   <div id="practiceSection" class="hidden">
-    <h1>Karteikarte lernen</h1>
+    <h1 id="practiceTitle"></h1>
     <div class="card" id="cardFront"></div>
     <div class="card hidden" id="cardBack"></div>
 
@@ -82,136 +103,212 @@ button:hover { background:#f1f5f9;}
     </div>
 
     <button onclick="flipCard()">Antwort anzeigen</button>
-    <button onclick="startSpeech()" id="micButton" class="hidden">🎤 Mikrofon starten</button>
+    <button onclick="startSpeech()" id="micButton" style="display:none">🎤 Mikrofon starten</button>
     <div class="result" id="transcript"></div>
-    <button onclick="checkAnswer()" id="checkButton" class="hidden">Prüfen</button>
+    <button onclick="checkAnswer()" id="checkButton" style="display:none">Prüfen</button>
 
     <div class="progress-bar">
       <div class="progress-fill" id="progressFill"></div>
     </div>
     <div class="result" id="scoreBox"></div>
 
-    <button onclick="nextCard()">Nächste Karte</button>
+    <div class="button-row">
+      <button onclick="nextCard()">Nächste Karte</button>
+      <button onclick="backToOverview()">Beenden</button>
+    </div>
   </div>
 
 </div>
 
 <script>
-let username="";
-let cards=[];
-let currentCard=0;
-let score=0;
+// ====== Benutzer + Login ======
+let username="", salutation="";
+let topics=[]; 
 let currentMode="text";
-let recognition;
 
+// ====== Registrierung / Start ======
 function login(){
-  username=document.getElementById("username").value;
-  if(!username) return alert("Bitte Name eingeben!");
+  salutation=document.getElementById("salutation").value;
+  const first=document.getElementById("firstName").value;
+  const last=document.getElementById("lastName").value;
+  if(!salutation||!first||!last) return alert("Bitte alle Felder ausfüllen!");
+  username=first+" "+last;
   document.getElementById("loginSection").classList.add("hidden");
-  document.getElementById("createSection").classList.remove("hidden");
+  document.getElementById("startScreen").classList.remove("hidden");
+  document.getElementById("welcomeText").innerText=`Guten Tag ${salutation} ${username}`;
 }
 
-// Karteikarten erstellen
-function generateCards(){
-  const text=document.getElementById("inputText").value;
-  const parts=text.split(".");
-  cards=[];
-  parts.forEach(p=>{
-    if(p.trim().length>5){
-      cards.push({question:"Erkläre: "+p.trim(), answer:p.trim(), level:0});
-    }
-  });
-  if(cards.length===0) return alert("Text zu kurz!");
-  document.getElementById("createSection").classList.add("hidden");
+// ====== Start → Übersicht ======
+function showTopics(){
+  document.getElementById("startScreen").classList.add("hidden");
   document.getElementById("overviewSection").classList.remove("hidden");
-  renderCardList();
+  renderTopics();
 }
 
-// Karteikarten Übersicht
-function renderCardList(){
+function renderTopics(){
   const list=document.getElementById("cardList");
   list.innerHTML="";
-  cards.forEach((c,i)=>{
+  topics.forEach((t,i)=>{
     const div=document.createElement("div");
-    div.textContent=c.question;
     div.className="card-list-item";
-    div.onclick=()=>{
-      currentCard=i;
-      startLearning();
-    }
+    div.textContent=t.name;
+
+    const learnBtn=document.createElement("button");
+    learnBtn.textContent="Lernen";
+    learnBtn.onclick=(e)=>{ e.stopPropagation(); startLearning(i); };
+
+    const editBtn=document.createElement("button");
+    editBtn.textContent="Bearbeiten";
+    editBtn.onclick=(e)=>{ e.stopPropagation(); editTopic(i); };
+
+    div.appendChild(learnBtn);
+    div.appendChild(editBtn);
+
     list.appendChild(div);
   });
 }
 
-// Lernmodus starten
-function startLearning(){
+// ====== Neues Thema erstellen ======
+function createNewTopic(){
+  document.getElementById("overviewSection").classList.add("hidden");
+  document.getElementById("createSection").classList.remove("hidden");
+}
+
+function generateCards(){
+  const name=document.getElementById("topicName").value;
+  const text=document.getElementById("inputText").value;
+  if(!name||!text) return alert("Bitte Thema und Text ausfüllen!");
+  const parts=text.split(".").filter(p=>p.trim().length>3);
+  const cards=parts.map(p=>({question:"Erkläre: "+p.trim(), answer:p.trim()}));
+  topics.push({name:name,cards:cards});
+  document.getElementById("createSection").classList.add("hidden");
+  document.getElementById("overviewSection").classList.remove("hidden");
+  renderTopics();
+}
+
+// ====== Bearbeiten ======
+let editIndex=0;
+function editTopic(index){
+  editIndex=index;
+  document.getElementById("overviewSection").classList.add("hidden");
+  document.getElementById("editSection").classList.remove("hidden");
+  renderEditCards();
+}
+
+function renderEditCards(){
+  const editDiv=document.getElementById("editCards");
+  editDiv.innerHTML="";
+  topics[editIndex].cards.forEach((c,i)=>{
+    const div=document.createElement("div");
+    const qInput=document.createElement("input");
+    qInput.type="text";
+    qInput.value=c.question;
+    qInput.addEventListener("change",()=>{ topics[editIndex].cards[i].question=qInput.value; });
+
+    const aInput=document.createElement("textarea");
+    aInput.value=c.answer;
+    aInput.addEventListener("change",()=>{ topics[editIndex].cards[i].answer=aInput.value; });
+
+    const delBtn=document.createElement("button");
+    delBtn.textContent="Löschen";
+    delBtn.onclick=()=>{ deleteCard(i); };
+
+    div.appendChild(qInput);
+    div.appendChild(aInput);
+    div.appendChild(delBtn);
+    editDiv.appendChild(div);
+  });
+}
+
+function deleteCard(i){
+  topics[editIndex].cards.splice(i,1);
+  renderEditCards();
+}
+
+function addCard(){
+  const text=document.getElementById("newCardText").value;
+  if(!text) return;
+  topics[editIndex].cards.push({question:"Erkläre: "+text, answer:text});
+  document.getElementById("newCardText").value="";
+  renderEditCards();
+}
+
+function saveCards(){
+  document.getElementById("editSection").classList.add("hidden");
+  document.getElementById("overviewSection").classList.remove("hidden");
+  renderTopics();
+}
+
+function backToOverview(){
+  document.getElementById("practiceSection").classList.add("hidden");
+  document.getElementById("editSection").classList.add("hidden");
+  document.getElementById("overviewSection").classList.remove("hidden");
+}
+
+// ====== Lernmodus ======
+let currentTopic=0, currentCard=0, score=0;
+
+function startLearning(index){
+  currentTopic=index;
+  currentCard=0;
+  score=0;
   document.getElementById("overviewSection").classList.add("hidden");
   document.getElementById("practiceSection").classList.remove("hidden");
+  document.getElementById("practiceTitle").innerText=topics[currentTopic].name;
   showCard();
 }
 
-// Karte anzeigen
 function showCard(){
-  document.getElementById("cardFront").innerText=cards[currentCard].question;
-  document.getElementById("cardBack").innerText=cards[currentCard].answer;
+  const c=topics[currentTopic].cards[currentCard];
+  document.getElementById("cardFront").innerText=c.question;
+  document.getElementById("cardBack").innerText=c.answer;
   document.getElementById("cardBack").classList.add("hidden");
-  updateProgress();
-  currentMode="text";
-  updateInfo();
-  document.getElementById("micButton").classList.add("hidden");
-  document.getElementById("checkButton").classList.add("hidden");
   document.getElementById("transcript").innerText="";
+
+  // Buttons Sichtbarkeit
+  document.getElementById("micButton").style.display = (currentMode==="voice")?"inline-block":"none";
+  document.getElementById("checkButton").style.display = (currentMode==="voice")?"inline-block":"none";
+
+  updateProgress();
 }
 
-// Flip Karte
-function flipCard(){
-  document.getElementById("cardBack").classList.remove("hidden");
-}
+function flipCard(){ document.getElementById("cardBack").classList.remove("hidden"); }
 
-// Fortschritt
-function updateProgress(){
-  let percent=((currentCard+1)/cards.length)*100;
-  document.getElementById("progressFill").style.width=percent+"%";
-  document.getElementById("scoreBox").innerText="Karte "+(currentCard+1)+" / "+cards.length+" | Punkte: "+score;
-}
-
-// Nächste Karte
 function nextCard(){
-  if(currentCard<cards.length-1){
+  if(currentCard<topics[currentTopic].cards.length-1){
     currentCard++;
     showCard();
   } else {
-    alert("Lernsession beendet! Punkte: "+score);
+    alert(`Session beendet! Punkte: ${score}`);
+    backToOverview();
   }
 }
 
-// Modus wechseln
+function updateProgress(){
+  const percent=((currentCard+1)/topics[currentTopic].cards.length)*100;
+  document.getElementById("progressFill").style.width=percent+"%";
+  document.getElementById("scoreBox").innerText=`Karte ${currentCard+1}/${topics[currentTopic].cards.length} | Punkte: ${score}`;
+}
+
+// ====== Moduswechsel ======
 document.getElementById("textMode").addEventListener("click", ()=>{
   currentMode="text";
   document.getElementById("textMode").classList.add("active");
   document.getElementById("voiceMode").classList.remove("active");
   updateInfo();
-  document.getElementById("micButton").classList.add("hidden");
-  document.getElementById("checkButton").classList.add("hidden");
-  document.getElementById("transcript").innerText="";
 });
-
 document.getElementById("voiceMode").addEventListener("click", ()=>{
   currentMode="voice";
   document.getElementById("voiceMode").classList.add("active");
   document.getElementById("textMode").classList.remove("active");
   updateInfo();
-  document.getElementById("micButton").classList.remove("hidden");
-  document.getElementById("checkButton").classList.remove("hidden");
 });
 
-// Info Panel
+// ====== Info Panel ======
 const infoBtn=document.getElementById("infoBtn");
 const infoPanel=document.getElementById("infoPanel");
-infoBtn.addEventListener("click", ()=>{infoPanel.classList.toggle("active");});
-document.addEventListener("click",(e)=>{
-  if(!infoPanel.contains(e.target)&&!infoBtn.contains(e.target)) infoPanel.classList.remove("active");
-});
+infoBtn.addEventListener("click",()=>infoPanel.classList.toggle("active"));
+document.addEventListener("click",(e)=>{if(!infoPanel.contains(e.target)&&!infoBtn.contains(e.target)) infoPanel.classList.remove("active");});
 function updateInfo(){
   const title=document.getElementById("methodTitle");
   const facts=document.getElementById("methodFacts");
@@ -229,7 +326,8 @@ function updateInfo(){
   }
 }
 
-// Sprachaufnahme
+// ====== Sprachaufnahme ======
+let recognition;
 function startSpeech(){
   if(!('webkitSpeechRecognition' in window)) return alert("Browser unterstützt Spracheingabe nicht");
   recognition=new webkitSpeechRecognition();
@@ -241,20 +339,18 @@ function startSpeech(){
   recognition.start();
 }
 
-// Prüfen simuliert
+// ====== Prüfen ======
 function checkAnswer(){
   const userAnswer=document.getElementById("transcript").innerText.toLowerCase();
-  const keyPoints=cards[currentCard].answer.toLowerCase().split(" ").filter(w=>w.length>3);
-  let hit=0;
-  let missing=[];
+  const keyPoints=topics[currentTopic].cards[currentCard].answer.toLowerCase().split(" ").filter(w=>w.length>3);
+  let hit=0; let missing=[];
   keyPoints.forEach(word=>{
-    if(userAnswer.includes(word)) hit++;
-    else missing.push(word);
+    if(userAnswer.includes(word)) hit++; else missing.push(word);
   });
   const percent=Math.round((hit/keyPoints.length)*100);
   score+=percent>70?2:percent>40?1:0;
-  document.getElementById("scoreBox").innerText="Punkte: "+score+" | Inhalt erreicht: "+percent+"%";
-  document.getElementById("transcript").innerText+="\n\nFehlende Punkte / Wörter: "+missing.join(", ");
+  document.getElementById("scoreBox").innerText=`Punkte: ${score} | Inhalt erreicht: ${percent}%`;
+  document.getElementById("transcript").innerText+="\n\nFehlende Wörter: "+missing.join(", ");
 }
 </script>
 </body>
